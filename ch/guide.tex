@@ -1,0 +1,26 @@
+\section{操作帮助}
+本节对于常见的操作给出通用的合约操作方法，本节描述的方法仅针对直接操作合约，以EtherScan为例。
+\subsection{查看多签时使用的\texttt{id}}
+在进行多签操作时，通常需要一个\texttt{id}，此\texttt{id}用于标识试图通过达成的共识的编号，该编号有以下特点：
+\begin{enumerate}
+\item 该\texttt{id}必须是从1开始连续递增的，不能跳过编号；
+\item 一个多签人仅能对同一个\texttt{id}进行一次表决；
+\item 该\texttt{id}的编号对于不同的函数是独立的，互相不影响；
+\item 该\texttt{id}的编号是由多签合约提供的，因此多签合约更换时，相应的\texttt{id}需要重新开始编号。
+\end{enumerate}
+综合上述特征，不难发现，在多签操作前，取得正确的\texttt{id}是很重要的。
+
+对于任一非多签合约，应该都可以在EtherScan中找到其对应的多签合约（合约中的\texttt{multisig\_contract}地址），
+在多签合约中，调用(read contract)\texttt{get\_unused\_invoke\_id}，填入要进行多签的函数名，就可以得到相应的\texttt{id}。
+
+\subsection{如何进行铸币}
+铸币的前提是铸币人需要在铸币白名单中。
+
+铸币操作分为两步：
+\begin{enumerate}
+\item 调用USDT合约的\texttt{approve}方法，需要注意的是，其中的spender必须为FundAndDistribute合约的地址，数量必须大于需要铸币的数量，例如\\
+\ccontract{0xdAC17F958D2ee523a2206206994597C13D831ec7}{approve}{0xAA9a51f48834924B2F79639Af74FefE9BFF74529, \\10000000000} \\
+其中，调用的地址为USDT合约的地址。
+
+\item 调用FundAndDistribute合约的\texttt{fund}方法，需要注意的是，由于该方法需要进行多次转账，因此需要适当调高gas费用。
+\end{enumerate}

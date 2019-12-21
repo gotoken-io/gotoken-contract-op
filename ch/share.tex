@@ -1,0 +1,73 @@
+\section{操作记录}
+\paragraph{2019-10-28}
+\begin{itemize}
+\item \begin{verbatim}
+add_multi_trusted(
+  1,
+  ['0xAA9a51f48834924B2F79639Af74FefE9BFF74529', //FundAndDistribute合约
+   '0x491c8a58DDb5a6380FeA7fE8909788f681453B00'  //InitLock合约
+  ])
+\end{verbatim}
+在GTToken合约中增加两个信任合约。
+\item \begin{verbatim}
+transfer(
+  1, 
+  0x3e6F107Fd4A95AF86108c1F44E502A6136AD386e,
+  1000000)
+\end{verbatim}
+实验性的将一个GoToken打出（已经在事后打回并销毁）。
+\end{itemize}
+
+\paragraph{2019-11-17}
+\begin{itemize}
+\item 对新的多签工厂合约调用，\\\ethaddr{0xe6D887f548b48bF30b06a68a0aaE06F62A525032}
+\begin{verbatim}
+createMultiSig(['0xe855B4cb17eA22CAE1be5FeB7fCDC0Ef67DCa84D',
+  '0x3e6F107Fd4A95AF86108c1F44E502A6136AD386e',
+  '0x57955d7AA271DbDDE92D67e0EF52D90c6E4089cA'])
+\end{verbatim}
+返回地址为\ethaddr{0x8e61F120beAe3CF91cC9a017AC48844348e3b34A}，为GT系统新的多签合约；
+\\\txhash{0x31288e10fc62a675c76e864b09b72146f156387ab60a990215c1260b81db498e}
+
+\item 修改GTToken的信任列表合约的多签地址，\\\ethaddr{0xBEb0FAE8c75c79e5f92c1C23C6435bD0509c276e}
+\begin{verbatim}
+transfer_multisig(1, 0x8e61F120beAe3CF91cC9a017AC48844348e3b34A)
+\end{verbatim}
+
+\item 修改GTToken 合约的多签地址，\\\ethaddr{0x353214343Ee192AD8a58C62961B972F4d5a6877E}
+\begin{verbatim}
+transfer_multisig(2, 0x8e61F120beAe3CF91cC9a017AC48844348e3b34A)
+\end{verbatim}
+
+\item 修改FundAndDistribute 合约的多签地址，\\\ethaddr{0xAA9a51f48834924B2F79639Af74FefE9BFF74529}
+\begin{verbatim}
+transfer_multisig(3, 0x8e61F120beAe3CF91cC9a017AC48844348e3b34A)
+\end{verbatim}
+
+\item 修改FundAndDistribute 白名单合约的多签地址，\\\ethaddr{0x735451974A28f63b0593cCe91696659c1B900380}
+\begin{verbatim}
+transfer_multisig(4, 0x8e61F120beAe3CF91cC9a017AC48844348e3b34A)
+\end{verbatim}
+
+\end{itemize}
+
+\paragraph{2019-11-28}
+\begin{itemize}
+\item 创建新的多签合约，用于管理FundAndDistribute白名单，与其他多签合约分离，\\
+\ccontract{0xe6D887f548b48bF30b06a68a0aaE06F62A525032}{createMultiSig}{['0xe855B4cb17eA22CAE1be5FeB7fCDC0Ef67DCa84D',
+  \\'0x3e6F107Fd4A95AF86108c1F44E502A6136AD386e',
+  \\'0x57955d7AA271DbDDE92D67e0EF52D90c6E4089cA',
+  \\'0x0aCA6913289d7887983F26d4CBF7ACF4B104D03f']}\\
+返回的合约地址为\ethaddr{0x86880095C6A4Dccef7e8dBdB8A864d417A37b7EA};
+\item 修改FundAndDistribute 白名单合约的多签地址，\\
+\ccontract{0x735451974A28f63b0593cCe91696659c1B900380}{transfer\_multisig}{1, \\0x86880095C6A4Dccef7e8dBdB8A864d417A37b7EA}
+
+\item 在FundAndDistribute白名单中增加地址，\\
+\ccontract{0x735451974A28f63b0593cCe91696659c1B900380}{add\_trusted}{1, 
+     \\0x0aCA6913289d7887983F26d4CBF7ACF4B104D03f}
+
+\item 修改FundAndDistribute的多签地址，\\
+\ccontract{0xAA9a51f48834924B2F79639Af74FefE9BFF74529}{transfer\_multisig}{2, \\0x86880095C6A4Dccef7e8dBdB8A864d417A37b7EA}
+
+\end{itemize}
+
